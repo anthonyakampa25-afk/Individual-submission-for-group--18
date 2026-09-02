@@ -1,0 +1,28 @@
+filepath = "C:\Users\Kevin\Desktop\group 18 matlab assignment\students_data.xlsx";
+studentData = readtable(filepath);
+disp('Data successfully imported into MATLAB');
+disp(head(studentData));
+
+groupMetaData = {'Group Name', 'WAR 2 - Group 18';'Group Number',18;'',''};
+outputfile = 'final_student_data.xlsx';
+writecell(groupMetaData,outputfile,'Sheet','Student Data','Range','A1');
+writetable(studentData,outputfile,'Sheet','Student Data','Range','A4');
+
+Data = readtable(filepath);
+pie(categorical(Data.Tribe))
+title('Students by Tribe');
+saveas(gcf,'TribePie.fig');
+histogram(categorical(Data.Hostel))
+title('Students by Hostels');
+xlabel('Hostel');
+ylabel('Students');
+saveas(gcf,'HostelsHistogram.fig');
+
+course1_qp = Data.Course1_GP .* Data.Course1_CU;
+course2_qp = Data.Course2_GP .* Data.Course2_GP;
+totalCreditUnits = Data.Course1_CU + Data.Course2_CU;
+totalQualityPoints = course1_qp + course2_qp;
+Data.GPA = totalQualityPoints ./ totalCreditUnits;
+Data.CGPA = Data.GPA;
+disp(' STUDENT RESULTS ');
+disp(Data(:, {'StudentID','Name','GPA','CGPA'}));
